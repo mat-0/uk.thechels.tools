@@ -14,8 +14,8 @@ Thank you for using Tools.TheChels.uk! If you need help or have questions, here 
 
 If you encounter a bug or have a feature request:
 
-1. **Search Existing Issues**: Check if your issue has already been reported in the [issue tracker](https://github.com/mat-0/Tools.TheChels.uk/issues).
-2. **Create a New Issue**: If you don't find an existing issue, [open a new issue](https://github.com/mat-0/Tools.TheChels.uk/issues/new) with:
+1. **Search Existing Issues**: Check if your issue has already been reported in the [issue tracker](https://github.com/mat-0/uk.thechels.tools/issues).
+2. **Create a New Issue**: If you don't find an existing issue, [open a new issue](https://github.com/mat-0/uk.thechels.tools/issues/new) with:
    - A clear and descriptive title
    - Steps to reproduce the problem
    - Expected vs. actual behavior

@@ -9,7 +9,7 @@
         padding: 2em;
         max-width: 700px;
         margin: 2em auto;
-        font-family: 'TheChelsLight', -system-ui, 'Gill Sans', sans-serif;
+        font-family: 'TheChelsLight', -apple-system, 'Gill Sans', sans-serif;
         color: #04100d;
     }
 
@@ -27,7 +27,7 @@
         font-size: 1.3em;
         margin-bottom: 1em;
         color: #04100d;
-        font-family: 'TheChelsMedium', -system-ui, 'Gill Sans', sans-serif;
+        font-family: 'TheChelsMedium', -apple-system, 'Gill Sans', sans-serif;
     }
 
     .form-group {
@@ -38,7 +38,7 @@
         display: block;
         margin-bottom: 0.5em;
         font-weight: 600;
-        font-family: 'TheChelsMedium', -system-ui, 'Gill Sans', sans-serif;
+        font-family: 'TheChelsMedium', -apple-system, 'Gill Sans', sans-serif;
         color: #04100d;
     }
 
@@ -51,7 +51,7 @@
         border-radius: 4px;
         padding: 0.6em;
         font-size: 1em;
-        font-family: 'TheChelsLight', -system-ui, 'Gill Sans', sans-serif;
+        font-family: 'TheChelsLight', -apple-system, 'Gill Sans', sans-serif;
         background: #f5f4f4;
         color: #04100d;
         box-sizing: border-box;
@@ -64,7 +64,7 @@
         border-radius: 4px;
         padding: 0.6em;
         font-size: 1em;
-        font-family: 'TheChelsLight', -system-ui, 'Gill Sans', sans-serif;
+        font-family: 'TheChelsLight', -apple-system, 'Gill Sans', sans-serif;
         background: #f5f4f4;
         color: #04100d;
         box-sizing: border-box;
@@ -105,7 +105,7 @@
     .btn {
         padding: 0.8em 1.5em;
         font-size: 1em;
-        font-family: 'TheChelsMedium', -system-ui, 'Gill Sans', sans-serif;
+        font-family: 'TheChelsMedium', -apple-system, 'Gill Sans', sans-serif;
         border: none;
         border-radius: 4px;
         cursor: pointer;
@@ -319,6 +319,7 @@
         <p>After generating your pass data:</p>
         <ol>
             <li>Download the JSON file containing your information</li>
+            <li><strong>Important:</strong> Before using this data with a pass generation service, you'll need to update the <code>passTypeIdentifier</code> field with a reverse domain notation that you own (e.g., "pass.com.yourdomain.medical"). The default placeholder "pass.com.example.medical" must be replaced.</li>
             <li>Use a pass generation service that supports Apple PassKit (you'll need to provide Apple Developer credentials or use a service that provides this)</li>
             <li>Some options for generating the .pkpass file:
                 <ul>
@@ -398,7 +399,7 @@
                 // Collect form data
                 const formData = {
                     formatVersion: 1,
-                    passTypeIdentifier: "pass.uk.thechels.tools.medical",
+                    passTypeIdentifier: "pass.com.example.medical",
                     organizationName: "Personal Medical Information",
                     teamIdentifier: "PLACEHOLDER",
                     serialNumber: generateSerialNumber(),
@@ -566,7 +567,7 @@
 
         // Helper functions
         function generateSerialNumber() {
-            return 'MECFS-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9).toUpperCase();
+            return 'MECFS-' + Date.now() + '-' + Math.random().toString(36).substring(2, 11).toUpperCase();
         }
 
         function showError(message) {

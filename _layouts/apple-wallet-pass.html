@@ -1,0 +1,639 @@
+{% include header.html %}
+<h1 class="post-title">{{ page.title }}</h1>
+
+<style>
+    .wallet-pass-editor {
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px #ccc;
+        padding: 2em;
+        max-width: 700px;
+        margin: 2em auto;
+        font-family: 'TheChelsLight', -apple-system, 'Gill Sans', sans-serif;
+        color: #04100d;
+    }
+
+    .form-section {
+        margin-bottom: 2em;
+        padding-bottom: 1.5em;
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+    .form-section:last-of-type {
+        border-bottom: none;
+    }
+
+    .form-section h2 {
+        font-size: 1.3em;
+        margin-bottom: 1em;
+        color: #04100d;
+        font-family: 'TheChelsMedium', -apple-system, 'Gill Sans', sans-serif;
+    }
+
+    .form-group {
+        margin-bottom: 1.2em;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 0.5em;
+        font-weight: 600;
+        font-family: 'TheChelsMedium', -apple-system, 'Gill Sans', sans-serif;
+        color: #04100d;
+    }
+
+    .form-group input[type="text"],
+    .form-group input[type="email"],
+    .form-group input[type="tel"],
+    .form-group input[type="date"] {
+        width: 100%;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        padding: 0.6em;
+        font-size: 1em;
+        font-family: 'TheChelsLight', -apple-system, 'Gill Sans', sans-serif;
+        background: #f5f4f4;
+        color: #04100d;
+        box-sizing: border-box;
+    }
+
+    .form-group textarea {
+        width: 100%;
+        min-height: 80px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        padding: 0.6em;
+        font-size: 1em;
+        font-family: 'TheChelsLight', -apple-system, 'Gill Sans', sans-serif;
+        background: #f5f4f4;
+        color: #04100d;
+        box-sizing: border-box;
+        resize: vertical;
+    }
+
+    .form-group input[type="file"] {
+        width: 100%;
+        padding: 0.5em;
+        font-size: 0.95em;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        background: #f5f4f4;
+        cursor: pointer;
+    }
+
+    .photo-preview {
+        margin-top: 1em;
+        max-width: 200px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        display: none;
+    }
+
+    .photo-preview img {
+        width: 100%;
+        height: auto;
+        border-radius: 4px;
+    }
+
+    .button-group {
+        display: flex;
+        gap: 1em;
+        margin-top: 2em;
+        flex-wrap: wrap;
+    }
+
+    .btn {
+        padding: 0.8em 1.5em;
+        font-size: 1em;
+        font-family: 'TheChelsMedium', -apple-system, 'Gill Sans', sans-serif;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+
+    .btn-primary {
+        background: #5d3fd3;
+        color: #fff;
+    }
+
+    .btn-primary:hover {
+        background: #4a2fb8;
+    }
+
+    .btn-secondary {
+        background: #6c757d;
+        color: #fff;
+    }
+
+    .btn-secondary:hover {
+        background: #5a6268;
+    }
+
+    .info-box {
+        background: #e7f3ff;
+        border-left: 4px solid #2196F3;
+        padding: 1em;
+        margin: 2em 0;
+        border-radius: 4px;
+    }
+
+    .info-box h3 {
+        margin-top: 0;
+        color: #1976D2;
+        font-size: 1.1em;
+    }
+
+    .info-box p {
+        margin: 0.5em 0;
+        line-height: 1.6;
+    }
+
+    .info-box ul {
+        margin: 0.5em 0;
+        padding-left: 1.5em;
+    }
+
+    .error-message {
+        background: #ffe7e7;
+        border-left: 4px solid #f44336;
+        padding: 1em;
+        margin: 1em 0;
+        border-radius: 4px;
+        display: none;
+    }
+
+    .success-message {
+        background: #e7ffe7;
+        border-left: 4px solid #4caf50;
+        padding: 1em;
+        margin: 1em 0;
+        border-radius: 4px;
+        display: none;
+    }
+
+    .small-text {
+        font-size: 0.9em;
+        color: #666;
+        margin-top: 0.3em;
+    }
+
+    .preview-section {
+        background: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 1.5em;
+        margin-top: 2em;
+        display: none;
+    }
+
+    .preview-section h2 {
+        margin-top: 0;
+        font-size: 1.3em;
+        color: #04100d;
+    }
+
+    .preview-content {
+        background: #fff;
+        padding: 1em;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+    }
+</style>
+
+<div class="wallet-pass-editor">
+    <div class="info-box">
+        <h3>About Apple Wallet Pass Generator</h3>
+        <p>This tool helps you create a medical information pass for Apple Wallet, specifically designed for individuals with ME/CFS and other conditions requiring reasonable adjustments.</p>
+        <p><strong>Important:</strong> Apple Wallet passes require server-side signing with Apple certificates. This tool will collect your information and generate a JSON file that can be used with a pass generation service.</p>
+        <p>After filling out the form, you can:</p>
+        <ul>
+            <li>Download your information as a JSON file</li>
+            <li>Preview your pass data</li>
+            <li>Use a third-party service to generate the .pkpass file</li>
+        </ul>
+        <p class="small-text">Note: Your data is only stored locally in your browser and is never sent to any server through this page.</p>
+    </div>
+
+    <form id="walletPassForm">
+        <div class="form-section">
+            <h2>Personal Information</h2>
+            
+            <div class="form-group">
+                <label for="fullName">Full Name *</label>
+                <input type="text" id="fullName" name="fullName" required>
+            </div>
+
+            <div class="form-group">
+                <label for="dateOfBirth">Date of Birth *</label>
+                <input type="date" id="dateOfBirth" name="dateOfBirth" required>
+            </div>
+
+            <div class="form-group">
+                <label for="address">Address</label>
+                <textarea id="address" name="address" placeholder="Enter your full address"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="telephone">Telephone Number *</label>
+                <input type="tel" id="telephone" name="telephone" required>
+                <div class="small-text">Include country code if applicable</div>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email">
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h2>Medical Information</h2>
+
+            <div class="form-group">
+                <label for="nhsNumber">NHS Number</label>
+                <input type="text" id="nhsNumber" name="nhsNumber" placeholder="e.g., 123 456 7890">
+                <div class="small-text">10-digit NHS number</div>
+            </div>
+
+            <div class="form-group">
+                <label for="allergies">Allergies</label>
+                <textarea id="allergies" name="allergies" placeholder="List any allergies (medications, food, environmental, etc.)"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="medications">Current Medications</label>
+                <textarea id="medications" name="medications" placeholder="List medications with dosage and schedule&#10;Example:&#10;- Medication A: 10mg, twice daily (morning and evening)&#10;- Medication B: 5mg, as needed"></textarea>
+                <div class="small-text">Include dosage and time schedule for each medication</div>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h2>ME/CFS Specific Information</h2>
+
+            <div class="form-group">
+                <label for="reasonableAdjustments">Reasonable Adjustments *</label>
+                <textarea id="reasonableAdjustments" name="reasonableAdjustments" required placeholder="Describe necessary reasonable adjustments&#10;Example:&#10;- Require rest breaks every 30 minutes&#10;- Sensitive to bright lights and loud noises&#10;- May need wheelchair access&#10;- Require assistance with forms"></textarea>
+                <div class="small-text">Detail any adjustments needed for medical appointments or emergencies</div>
+            </div>
+
+            <div class="form-group">
+                <label for="additionalNotes">Additional Notes</label>
+                <textarea id="additionalNotes" name="additionalNotes" placeholder="Any other important information for medical professionals"></textarea>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h2>Photo (Optional)</h2>
+
+            <div class="form-group">
+                <label for="photo">Upload Photo</label>
+                <input type="file" id="photo" name="photo" accept="image/*">
+                <div class="small-text">Recommended: Recent photo for identification purposes</div>
+            </div>
+
+            <div class="photo-preview" id="photoPreview">
+                <img id="photoPreviewImg" src="" alt="Photo preview">
+            </div>
+        </div>
+
+        <div class="error-message" id="errorMessage"></div>
+        <div class="success-message" id="successMessage"></div>
+
+        <div class="button-group">
+            <button type="button" class="btn btn-primary" id="generateBtn">Generate Pass Data</button>
+            <button type="button" class="btn btn-secondary" id="downloadBtn" disabled>Download JSON</button>
+            <button type="button" class="btn btn-secondary" id="previewBtn">Preview Data</button>
+            <button type="reset" class="btn btn-secondary">Clear Form</button>
+        </div>
+    </form>
+
+    <div class="preview-section" id="previewSection">
+        <h2>Pass Data Preview</h2>
+        <div class="preview-content" id="previewContent"></div>
+    </div>
+
+    <div class="info-box" style="margin-top: 2em;">
+        <h3>Next Steps</h3>
+        <p>After generating your pass data:</p>
+        <ol>
+            <li>Download the JSON file containing your information</li>
+            <li><strong>Important:</strong> Before using this data with a pass generation service, you'll need to update the <code>passTypeIdentifier</code> field with a reverse domain notation that you own (e.g., "pass.com.yourdomain.medical"). The default placeholder "pass.com.example.medical" must be replaced.</li>
+            <li>Use a pass generation service that supports Apple PassKit (you'll need to provide Apple Developer credentials or use a service that provides this)</li>
+            <li>Some options for generating the .pkpass file:
+                <ul>
+                    <li>Use an online pass generator service</li>
+                    <li>Set up your own pass generation server using Apple's PassKit framework</li>
+                    <li>Contact a developer who can help sign and generate the pass</li>
+                </ul>
+            </li>
+            <li>Once you have the .pkpass file, open it on your iOS device to add it to Apple Wallet</li>
+        </ol>
+        <p><strong>Security Note:</strong> Be cautious when sharing your medical information. Only use trusted services for pass generation.</p>
+    </div>
+</div>
+
+<script>
+    (function() {
+        'use strict';
+
+        const form = document.getElementById('walletPassForm');
+        const generateBtn = document.getElementById('generateBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const previewBtn = document.getElementById('previewBtn');
+        const photoInput = document.getElementById('photo');
+        const photoPreview = document.getElementById('photoPreview');
+        const photoPreviewImg = document.getElementById('photoPreviewImg');
+        const errorMessage = document.getElementById('errorMessage');
+        const successMessage = document.getElementById('successMessage');
+        const previewSection = document.getElementById('previewSection');
+        const previewContent = document.getElementById('previewContent');
+
+        let passData = null;
+        let photoDataUrl = null;
+
+        // Handle photo upload and preview
+        photoInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                if (file.size > 5 * 1024 * 1024) {
+                    showError('Photo file size must be less than 5MB');
+                    photoInput.value = '';
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    photoDataUrl = event.target.result;
+                    photoPreviewImg.src = photoDataUrl;
+                    photoPreview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            } else {
+                photoPreview.style.display = 'none';
+                photoDataUrl = null;
+            }
+        });
+
+        // Form reset handler
+        form.addEventListener('reset', function() {
+            photoPreview.style.display = 'none';
+            photoDataUrl = null;
+            passData = null;
+            downloadBtn.disabled = true;
+            previewSection.style.display = 'none';
+            hideMessages();
+        });
+
+        // Generate pass data
+        generateBtn.addEventListener('click', function() {
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            hideMessages();
+
+            try {
+                // Collect form data
+                const formData = {
+                    formatVersion: 1,
+                    passTypeIdentifier: "pass.com.example.medical",
+                    organizationName: "Personal Medical Information",
+                    teamIdentifier: "PLACEHOLDER",
+                    serialNumber: generateSerialNumber(),
+                    description: "Medical Information Pass",
+                    personalInfo: {
+                        fullName: document.getElementById('fullName').value.trim(),
+                        dateOfBirth: document.getElementById('dateOfBirth').value,
+                        address: document.getElementById('address').value.trim(),
+                        telephone: document.getElementById('telephone').value.trim(),
+                        email: document.getElementById('email').value.trim()
+                    },
+                    medicalInfo: {
+                        nhsNumber: document.getElementById('nhsNumber').value.trim(),
+                        allergies: document.getElementById('allergies').value.trim(),
+                        medications: document.getElementById('medications').value.trim()
+                    },
+                    mecfsInfo: {
+                        reasonableAdjustments: document.getElementById('reasonableAdjustments').value.trim(),
+                        additionalNotes: document.getElementById('additionalNotes').value.trim()
+                    },
+                    createdAt: new Date().toISOString()
+                };
+
+                // Add photo if provided
+                if (photoDataUrl) {
+                    formData.photo = photoDataUrl;
+                }
+
+                // Structure for Apple Wallet pass format
+                passData = {
+                    passInfo: formData,
+                    passStructure: {
+                        headerFields: [
+                            {
+                                key: "name",
+                                label: "NAME",
+                                value: formData.personalInfo.fullName
+                            }
+                        ],
+                        primaryFields: [
+                            {
+                                key: "emergency",
+                                label: "EMERGENCY CONTACT",
+                                value: formData.personalInfo.telephone
+                            }
+                        ],
+                        secondaryFields: [
+                            {
+                                key: "dob",
+                                label: "DATE OF BIRTH",
+                                value: formData.personalInfo.dateOfBirth
+                            },
+                            {
+                                key: "nhs",
+                                label: "NHS NUMBER",
+                                value: formData.medicalInfo.nhsNumber || "N/A"
+                            }
+                        ],
+                        auxiliaryFields: [
+                            {
+                                key: "allergies",
+                                label: "ALLERGIES",
+                                value: formData.medicalInfo.allergies || "None reported"
+                            }
+                        ],
+                        backFields: [
+                            {
+                                key: "fullAddress",
+                                label: "Address",
+                                value: formData.personalInfo.address || "Not provided"
+                            },
+                            {
+                                key: "email",
+                                label: "Email",
+                                value: formData.personalInfo.email || "Not provided"
+                            },
+                            {
+                                key: "medications",
+                                label: "Current Medications",
+                                value: formData.medicalInfo.medications || "None reported"
+                            },
+                            {
+                                key: "adjustments",
+                                label: "Reasonable Adjustments (ME/CFS)",
+                                value: formData.mecfsInfo.reasonableAdjustments
+                            },
+                            {
+                                key: "notes",
+                                label: "Additional Notes",
+                                value: formData.mecfsInfo.additionalNotes || "None"
+                            }
+                        ]
+                    },
+                    styling: {
+                        backgroundColor: "rgb(255, 255, 255)",
+                        foregroundColor: "rgb(0, 0, 0)",
+                        labelColor: "rgb(100, 100, 100)"
+                    }
+                };
+
+                showSuccess('Pass data generated successfully! You can now download the JSON file.');
+                downloadBtn.disabled = false;
+
+            } catch (error) {
+                showError('Error generating pass data: ' + error.message);
+                console.error('Error:', error);
+            }
+        });
+
+        // Download JSON file
+        downloadBtn.addEventListener('click', function() {
+            if (!passData) {
+                showError('Please generate pass data first');
+                return;
+            }
+
+            try {
+                const jsonStr = JSON.stringify(passData, null, 2);
+                const blob = new Blob([jsonStr], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'medical-pass-data-' + Date.now() + '.json';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+
+                showSuccess('JSON file downloaded successfully!');
+            } catch (error) {
+                showError('Error downloading file: ' + error.message);
+                console.error('Error:', error);
+            }
+        });
+
+        // Preview data
+        previewBtn.addEventListener('click', function() {
+            if (!passData) {
+                // If no pass data generated yet, show current form data
+                const formDataPreview = {
+                    fullName: document.getElementById('fullName').value.trim(),
+                    dateOfBirth: document.getElementById('dateOfBirth').value,
+                    address: document.getElementById('address').value.trim(),
+                    telephone: document.getElementById('telephone').value.trim(),
+                    email: document.getElementById('email').value.trim(),
+                    nhsNumber: document.getElementById('nhsNumber').value.trim(),
+                    allergies: document.getElementById('allergies').value.trim(),
+                    medications: document.getElementById('medications').value.trim(),
+                    reasonableAdjustments: document.getElementById('reasonableAdjustments').value.trim(),
+                    additionalNotes: document.getElementById('additionalNotes').value.trim()
+                };
+                previewContent.textContent = JSON.stringify(formDataPreview, null, 2);
+            } else {
+                // Show generated pass data (without photo data to keep it readable)
+                const previewData = JSON.parse(JSON.stringify(passData));
+                if (previewData.passInfo && previewData.passInfo.photo) {
+                    previewData.passInfo.photo = '[Base64 Image Data]';
+                }
+                previewContent.textContent = JSON.stringify(previewData, null, 2);
+            }
+
+            previewSection.style.display = 'block';
+            previewSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        });
+
+        // Helper functions
+        function generateSerialNumber() {
+            return 'MECFS-' + Date.now() + '-' + Math.random().toString(36).substring(2, 11).toUpperCase();
+        }
+
+        function showError(message) {
+            errorMessage.textContent = message;
+            errorMessage.style.display = 'block';
+            successMessage.style.display = 'none';
+            errorMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function showSuccess(message) {
+            successMessage.textContent = message;
+            successMessage.style.display = 'block';
+            errorMessage.style.display = 'none';
+        }
+
+        function hideMessages() {
+            errorMessage.style.display = 'none';
+            successMessage.style.display = 'none';
+        }
+
+        // Load data from localStorage if available (for persistence)
+        window.addEventListener('load', function() {
+            try {
+                const savedData = localStorage.getItem('walletPassFormData');
+                if (savedData) {
+                    const data = JSON.parse(savedData);
+                    // Optionally populate form with saved data
+                    // (Commented out for privacy, but can be enabled)
+                    // Object.keys(data).forEach(key => {
+                    //     const element = document.getElementById(key);
+                    //     if (element) element.value = data[key];
+                    // });
+                }
+            } catch (error) {
+                console.error('Error loading saved data:', error);
+            }
+        });
+
+        // Save form data to localStorage periodically (optional)
+        // Commented out for privacy concerns
+        /*
+        form.addEventListener('input', debounce(function() {
+            const formDataToSave = {};
+            const inputs = form.querySelectorAll('input, textarea');
+            inputs.forEach(input => {
+                if (input.type !== 'file') {
+                    formDataToSave[input.id] = input.value;
+                }
+            });
+            localStorage.setItem('walletPassFormData', JSON.stringify(formDataToSave));
+        }, 1000));
+        */
+
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+    })();
+</script>
+
+{% include footer.html %}

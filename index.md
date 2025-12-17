@@ -7,6 +7,7 @@ seo: toolkit
 
 ## Tools
 
+* [Apple Wallet Pass Generator](/apple-wallet-pass) - Generate medical information passes for Apple Wallet (ME/CFS)
 * [Weather Forecast by postcode](/weather-forecast) - Weather for a specific postcode (requires OpenWeatherMap API key)
 * [Refinement Thought Provoker](/refinement) - Randomly generated thought provoker for refinement sessions
 * [Teaming](/teaming) - Helping Engineers in group programming sessions

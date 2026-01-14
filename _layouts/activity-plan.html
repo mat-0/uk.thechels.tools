@@ -46,6 +46,22 @@
         color: #005ca3;
     }
     
+    .hour-header-row {
+        display: flex;
+        margin-bottom: 5px;
+        border-bottom: 2px solid #005ca3;
+        padding-bottom: 3px;
+    }
+    
+    .hour-header-cell {
+        width: 20px;
+        height: 15px;
+        font-size: 0.65em;
+        text-align: center;
+        font-weight: bold;
+        color: #005ca3;
+    }
+    
     .day-row {
         display: flex;
         margin-bottom: 2px;
@@ -195,6 +211,25 @@
             weekTitle.className = 'week-title';
             weekTitle.textContent = `Week ${week + 1}`;
             weekDiv.appendChild(weekTitle);
+            
+            // Add hour header row
+            const headerRow = document.createElement('div');
+            headerRow.className = 'hour-header-row';
+            
+            // Empty cell for date column
+            const emptyHeader = document.createElement('div');
+            emptyHeader.className = 'date-cell';
+            headerRow.appendChild(emptyHeader);
+            
+            // Hour headers (0-23)
+            for (let hour = 0; hour < HOURS_PER_DAY; hour++) {
+                const hourHeader = document.createElement('div');
+                hourHeader.className = 'hour-header-cell';
+                hourHeader.textContent = hour;
+                headerRow.appendChild(hourHeader);
+            }
+            
+            weekDiv.appendChild(headerRow);
             
             for (let day = 0; day < DAYS_PER_WEEK; day++) {
                 const dayRow = document.createElement('div');

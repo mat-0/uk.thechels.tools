@@ -349,7 +349,7 @@
 
     // Handle cell click
     function handleCellClick(event) {
-        const cell = event.target;
+        const cell = event.currentTarget;
         const dateKey = cell.dataset.dateKey;
         const hour = cell.dataset.hour;
         const cellKey = `${dateKey}-${hour}`;
